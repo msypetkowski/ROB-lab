@@ -1,50 +1,61 @@
-qwe='qwe' % function in first line needs proper filename
+qwe='qwe'; % function in first line needs proper filename
+
 
 function retval = distances(v, m)
-    repeated = repmat(v, size(m)(1), 1)
-    retval = sqrt(sum((repeated .- m) .^ 2, 2))
+    % returns list of distances between v
+    % and each vector in m
+    repeated = repmat(v, size(m)(1), 1);
+    retval = sqrt(sum((repeated .- m) .^ 2, 2));
 endfunction
 
 
-function retval = main(iris1, iris2, point)
-    d1 = distances(point, iris1(:, 2:end))
-    d2 = distances(point, iris2(:, 2:end))
-    [min1, i1] = min(d1)
-    [min2, i2] = min(d2)
-    disp ('minimal distance:')
+function retval = predict(data1, data2, point)
+    % returns 1 or 2 (predicted class of point)
+    % d1 = distances(point, data1(:, 2:end));
+    % d2 = distances(point, data2(:, 2:end));
+    d1 = distances(point, data1);
+    d2 = distances(point, data2);
+    [min1, i1] = min(d1);
+    [min2, i2] = min(d2);
+    % disp ('minimal distance:');
     if min1 < min2
-        disp (min1)
-        disp (iris1(i1, :))
-        disp ('class versicolor')
-        retval = 1
+        % disp (min1);
+        % disp (data1(i1, :));
+        % disp ('class versicolor');
+        retval = 1;
     else
-        disp (min2)
-        disp (iris2(i2, :))
-        disp ('class virginica')
-        retval = 2
+        % disp (min2);
+        % disp (data2(i2, :));
+        % disp ('class virginica');
+        retval = 2;
     endif
 endfunction
 
 
+function retval = getCorrect(class1, class2)
+    % returns count of correct predictions
+    % removing single elements from class1
+    total = 0;
+    for i = 1:size(class1)(1)
+        testSample = class1(i, :); % (2:end);
+        trainData = class1(1:end != i, :);
+        result = predict(trainData, class2, testSample);
+        if result == 1
+            total = total + 1;
+        endif
+    endfor
+    retval = total;
+endfunction
 
-iris1 = load ('iris2.txt') % (:, 2:end)
-iris2 = load ('iris3.txt') % (:, 2:end)
 
-% disp (main(iris1, iris2, point))
+function retval = evalForFeatures(class1, class2, features)
+    data1 = class1(: , features);
+    data2 = class2(: , features);
+    retval = getCorrect(data1, data2) + getCorrect(data2, data1);
+endfunction
 
-totalCorrect = 0
+iris1 = load ('iris2.txt') (:, 2:end);
+iris2 = load ('iris3.txt') (:, 2:end);
 
-%for i = 1:size(iris1)(1)
-for i = 1:1
-    testSample = iris1(i, :)
-    trainData = iris1(1:end != i, :)
-    disp(size(trainData))
-    result = main(trainData, iris2, testSample)
-    if results == 1
-        totalCorrect = totalCorrect + 1
-    endif
-    disp (outIndex)
-endfor
-
-disp(totalCorrect ./ (size(iris1) + size(iris2)))
-
+features = [1, 2, 3, 4];
+disp(evalForFeatures(iris1, iris2, features))
