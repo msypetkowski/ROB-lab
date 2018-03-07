@@ -18,32 +18,42 @@ def load(filename):
     return ret[:, 1:]
 
 def drawData(data):
-    counts, breakpoints = np.histogram(data, bins=6)
+    counts, breakpoints = np.histogram(data, bins=10)
 
     breakpoints = list(map(np.mean, zip(breakpoints, islice(breakpoints, 1, None))))
     counts = counts / len(data) / (breakpoints[1] - breakpoints[0])
-    draw2DPlot(breakpoints, counts)
+    # draw2DPlot(breakpoints, counts)
     # draw2DPlot(range(len(hist)),)
 
     mu = np.mean(data)
     sigma = np.std(data)
+
     # mu = np.mean(data) 
     # sigma = 1
     x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
     plt.plot(x,mlab.normpdf(x, mu, sigma))
 
-    plt.show()
 
     # plt.hist(data, bins='auto')  # arguments are passed to np.histogram
     # plt.title("histogram")
     # plt.show()
+    return mu, sigma
 
 
 def main():
     data1 = load('../iris/iris2.txt')
     data2 = load('../iris/iris3.txt')
-    drawData(data1[:,2])
-    # drawData(data2[:,2])
+    mu1, sigma1 = drawData(data1[:,2])
+    mu2, sigma2 = drawData(data2[:,2])
+    print('mu', mu1, mu2)
+    m = np.mean([mu1, mu2])
+    print('xopt', m)
+    plt.plot([m, m], [0, 1])
+    print('error1', (sum(d[2] > m for d in data1) / len(data1)))
+    print('error2', (sum(d[2] <= m for d in data2) / len(data2)))
+    print('error', (sum(d[2] > m for d in data1) +
+                    sum(d[2] <= m for d in data2)) / len(data1 + data2))
+    plt.show()
 
 if __name__ == '__main__':
     main()

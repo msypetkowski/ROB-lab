@@ -55,14 +55,16 @@ disp(evalForFeatures(iris1, iris2, 1:4))
 
 disp('---------3 fetures:')
 for i = 1:4
-    features = (1:4) (1:end != i)
+    features = (1:4) (1:end != i);
+	disp(features);
     disp(evalForFeatures(iris1, iris2, features));
 endfor
 
 disp('---------2 fetures:')
 for i = 1:4
     for j = (i+1):4
-        features = (1:4) (1:end != i) (1:end != j-1)
+        features = (1:4) (1:end != i) (1:end != j-1);
+		disp(features);
         disp(evalForFeatures(iris1, iris2, features));
     endfor
 endfor
