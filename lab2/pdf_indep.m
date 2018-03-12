@@ -9,6 +9,23 @@ function pdf = pdf_indep(pts, para)
 %	liczba kolumn = liczba klas
 
 	% znam rozmiar wyniku, wiêc go alokujê
-	pdf = zeros(rows(pts), rows(para.mu));
+	pdf = ones(rows(pts), rows(para.mu));
+
+    % for i=1 : size(pts)
+    %     for j=1 : rows(para.mu) % for each class
+    %         pdf(i, j) = 1;
+    %         for k=1 : columns(para.mu) % for each feature
+    %             pdf(i, j) = pdf(i, j) * normpdf(pts(i, k),
+    %                         para.mu(j,k), para.sig(j,k));
+    %         endfor
+    %     endfor
+    % endfor
+
+    for j=1 : rows(para.mu) % for each class
+        for k=1 : columns(para.mu) % for each feature
+            pdf(:, j) = pdf(:, j) .* normpdf(pts(:, k),
+                        para.mu(j,k), para.sig(j,k));
+        endfor
+    endfor
 
 end

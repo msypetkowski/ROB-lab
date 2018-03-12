@@ -27,4 +27,5 @@ function plot2features(tset, f1, f2)
 		plot(res(idx,1), res(idx,2), pattern(i,:));
 	end
 	hold off;
+    pause;
 end
