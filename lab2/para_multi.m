@@ -15,9 +15,9 @@ function para = para_multi(ts)
         para.mu(i,:) = mean(ts(ts == i, 2:end), 1);
     endfor
 
-    for i=1:columns(ts)-1
-        for j=1:(columns(ts)-1)
-            for k=1:rows(labels)
+    for i=1:columns(ts)-1 % for each feature
+        for j=1:(columns(ts)-1) % for each feature
+            for k=1:rows(labels) % for each class
                 para.sig(i,j,k) = cov(
                     ts(ts == k, 2:end)(:, i),
                     ts(ts == k, 2:end)(:, j));

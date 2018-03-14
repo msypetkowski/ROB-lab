@@ -8,6 +8,10 @@ function pdf = pdf_multi(pts, para)
 %	liczba wierszy = liczba próbek w pts
 %	liczba kolumn = liczba klas
 
-	pdf = rand(rows(pts), rows(para.mu));
+	pdf = zeros(rows(pts), rows(para.mu));
+
+    for i=1:rows(para.mu) % for each class
+        pdf(:, i) = mvnpdf(pts, para.mu(i,:), para.sig(:,:,i));
+    endfor
 	
 end
