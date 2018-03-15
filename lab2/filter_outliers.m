@@ -5,7 +5,7 @@ function ret = filter_outliers(data)
     range = quantile(ind_normalized, 0.75) .- quantile(ind_normalized, 0.25);
 
 
-    multiplier = 80.0;
+    multiplier = 90.0;
     up_thr = quantile(ind_normalized, 0.75) .+ range * multiplier;
     down_thr = quantile(ind_normalized, 0.25) .- range * multiplier;
 

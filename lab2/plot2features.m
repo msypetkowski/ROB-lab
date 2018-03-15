@@ -1,4 +1,4 @@
-function plot2features(tset, f1, f2)
+function plot2features(tset, f1, f2, figure=1)
 	% rysuje punkty zbioru tset na dwuwymiarowym wykresie
 	%  u¿ywaj¹c cech f1 i f2
 	% wartoœci¹ funkcji s¹ wspó³rzêdne cech f1 i f2
@@ -20,12 +20,14 @@ function plot2features(tset, f1, f2)
 	labels = unique(tset(:,1));
 	
 	% utworzenie okna wykresu i zablokowanie usuwania zawartoœci
-	figure;
+    if figure == 1
+        figure;
+    end
+
 	hold on;
 	for i=1:size(labels,1)
 		idx = tset(:,1) == labels(i);
 		plot(res(idx,1), res(idx,2), pattern(i,:));
 	end
 	hold off;
-    pause;
 end
