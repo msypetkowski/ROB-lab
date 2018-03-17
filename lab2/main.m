@@ -69,7 +69,7 @@ function ret = run_on_features(train, test, features)
     base_ercf = zeros(1,3);
     base_ercf(1) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para) != test(:,1));
     base_ercf(2) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
-    base_ercf(3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1))
+    base_ercf(3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
     ret = base_ercf;
 end
 
@@ -79,8 +79,6 @@ run_on_features(train, test, [4 5]) % ...
 run_on_features(train, test, [2 4]) % visually best
 run_on_features(train, test, [2 3 4 5 6 7 8])
 
-
-exit(0);
 
 
 disp('4. Reduce-----------------')
@@ -103,7 +101,7 @@ parts = [0.04 0.06 0.08 parts]';
 pl = [];
 for i=1:rows(parts)
     base_ercf = zeros(1,3);
-    experiments_count = 5;
+    experiments_count = 10;
     for r=1:experiments_count
         reduced = reduce(train, parts(i));
 
@@ -113,7 +111,7 @@ for i=1:rows(parts)
 
         base_ercf(1) += mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para) != test(:,1));
         base_ercf(2) += mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
-        % base_ercf(3) += mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1))
+        base_ercf(3) += mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
     end
     base_ercf /= experiments_count
     pl = cat(1, pl, base_ercf);
