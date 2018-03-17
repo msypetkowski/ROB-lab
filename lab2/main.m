@@ -86,22 +86,22 @@ function ret = reduce(dataset, part)
     ret = [];
     labels = unique(dataset(:,1));
     for c=1:rows(labels)
-        % disp(labels(c))
         data = dataset(dataset(:, 1) == labels(c), :);
         count = ceil(rows(data) * part);
         rndIDX = randperm(rows(data));
         ret = cat(1, ret ,data(rndIDX(1:count), :));
     end
-
 end
-
 parts = (1:5) / 5;
-parts = [0.04 0.06 0.08 parts]';
+parts = [0.06 0.08 parts]';
 % parts = parts'
-pl = [];
+stat_means = [];
+stat_std = [];
+stat_min = [];
+stat_max = [];
 for i=1:rows(parts)
-    base_ercf = zeros(1,3);
-    experiments_count = 10;
+    experiments_count = 2;
+    base_ercf = zeros(experiments_count,3);
     for r=1:experiments_count
         reduced = reduce(train, parts(i));
 
@@ -109,23 +109,59 @@ for i=1:rows(parts)
         pdfmulti_para = para_multi(reduced);
         pdfparzen_para = para_parzen(reduced, 0.001); 
 
-        base_ercf(1) += mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para) != test(:,1));
-        base_ercf(2) += mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
-        base_ercf(3) += mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
+        base_ercf(r, 1) = mean(bayescls(test(:,2:end), @pdf_indep, pdfindep_para) != test(:,1));
+        base_ercf(r, 2) = mean(bayescls(test(:,2:end), @pdf_multi, pdfmulti_para) != test(:,1));
+        base_ercf(r, 3) = mean(bayescls(test(:,2:end), @pdf_parzen, pdfparzen_para) != test(:,1));
     end
-    base_ercf /= experiments_count
-    pl = cat(1, pl, base_ercf);
+    stat_means = cat(1, stat_means, mean(base_ercf, 1));
+    stat_std = cat(1, stat_std, std(base_ercf));
+    stat_min = cat(1, stat_min, min(base_ercf));
+    stat_max = cat(1, stat_max, max(base_ercf));
 end
 
-figure('Position',[0,0,2000,2000]);
+fontsize = 20
+linewidth = 3
+set(0, "defaultlinelinewidth", linewidth);
+figure('Position',[0,0,1500,2000]);
 for i=1:3
     hold on;
-    plot(parts * rows(train), pl(:, i), 'linewidth', 5);
+    % plot(parts * rows(train), stat_means(:, i), '-o', 'linewidth', linewidth);
+    errorbar(parts * rows(train), stat_means(:, i), stat_std(:, i), stat_std(:, i));
+
+    % annotations = cellstr(num2str(stat_std(:, i)));
+    % text(parts * rows(train), stat_means(:, i), annotations, 'VerticalAlignment','bottom', ...
+    %      'HorizontalAlignment','right', 'fontsize', fontsize);
 end
-set(gca, "linewidth", 4, "fontsize", 20)
+set(gca, "linewidth", linewidth, "fontsize", fontsize)
 legend({'indep', 'multi', 'parzen'});
 xlabel('Training samples count')
 ylabel('Classification error rate')
 hold off;
 grid on;
-pause
+pause;
+
+figure('Position',[0,0,1500,2000]);
+for i=1:3
+    hold on;
+    plot(parts * rows(train), stat_min(:, i), '-o', 'linewidth', linewidth);
+end
+set(gca, "linewidth", linewidth, "fontsize", fontsize);
+legend({'indep', 'multi', 'parzen'});
+xlabel('Training samples count')
+ylabel('Classification error rate')
+hold off;
+grid on;
+pause;
+
+figure('Position',[0,0,1500,2000]);
+for i=1:3
+    hold on;
+    plot(parts * rows(train), stat_max(:, i), '-o', 'linewidth', linewidth);
+end
+set(gca, "linewidth", linewidth, "fontsize", fontsize);
+legend({'indep', 'multi', 'parzen'});
+xlabel('Training samples count')
+ylabel('Classification error rate')
+hold off;
+grid on;
+pause;
