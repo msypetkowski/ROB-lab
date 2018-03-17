@@ -82,16 +82,6 @@ run_on_features(train, test, [2 3 4 5 6 7 8])
 
 
 disp('4. Reduce-----------------')
-function ret = reduce(dataset, part)
-    ret = [];
-    labels = unique(dataset(:,1));
-    for c=1:rows(labels)
-        data = dataset(dataset(:, 1) == labels(c), :);
-        count = ceil(rows(data) * part);
-        rndIDX = randperm(rows(data));
-        ret = cat(1, ret ,data(rndIDX(1:count), :));
-    end
-end
 parts = (1:5) / 5;
 parts = [0.06 0.08 parts]';
 % parts = parts'
