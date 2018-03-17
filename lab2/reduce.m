@@ -1,9 +1,9 @@
-function ret = reduce(dataset, part)
+function ret = reduce(dataset, parts)
     ret = [];
     labels = unique(dataset(:,1));
     for c=1:rows(labels)
         data = dataset(dataset(:, 1) == labels(c), :);
-        count = ceil(rows(data) * part);
+        count = ceil(rows(data) * parts(c));
         rndIDX = randperm(rows(data));
         ret = cat(1, ret ,data(rndIDX(1:count), :));
     end

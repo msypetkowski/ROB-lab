@@ -39,22 +39,22 @@ test = filter_outliers(test);
 
 disp('3. Optimal bayes 2 features-----------------')
 % show all feature pairs visualisations
-% function show_all_pairs(data)
-%     index = 0;
-%     figure('Position',[0,0,2000,2000]);
-%     for i = 2:8
-%         for j = (i+1):8
-%             index = index + 1;
-%             subplot(5,5, index);
-%             title (sprintf ('features %d %d', i, j));
-%             features = [i j];
-%             plot2features(data, i, j, 0)
-%         end
-%     end
-%     pause
-% end
-% show_all_pairs(train)
-% show_all_pairs(test)
+function show_all_pairs(data)
+    index = 0;
+    figure('Position',[0,0,2000,2000]);
+    for i = 2:8
+        for j = (i+1):8
+            index = index + 1;
+            subplot(5,5, index);
+            title (sprintf ('features %d %d', i, j));
+            features = [i j];
+            plot2features(data, i, j, 0)
+        end
+    end
+    pause
+end
+show_all_pairs(train)
+show_all_pairs(test)
 
 function ret = run_on_features(train, test, features)
     train = train(:, [1 features]);
@@ -93,7 +93,7 @@ for i=1:rows(parts)
     experiments_count = 2;
     base_ercf = zeros(experiments_count,3);
     for r=1:experiments_count
-        reduced = reduce(train, parts(i));
+        reduced = reduce(train, repmat(parts(i), rows(labels), 1));
 
         pdfindep_para = para_indep(reduced);
         pdfmulti_para = para_multi(reduced);
