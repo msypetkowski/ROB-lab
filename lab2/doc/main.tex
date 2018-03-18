@@ -14,7 +14,7 @@
 \begin{document}
 
 
-\title{Laboratorium Rozpoznawania Obrazów – Ćwiczenie \#2 Klasyfikacja optymalna Bayesa}
+\title{Laboratorium Rozpoznawania Obrazów – Ćwiczenie \#2 Klasyfikacja optymalna Bayesa - Poniedziałek parzysty}
 
 \author{Michał Sypetkowski}
 \maketitle
@@ -35,6 +35,11 @@ W eksperymentach rozpatrywane są 3 metody estymacji pdf:
     podstawie zbioru uczącego
     W eksperymentach innych niż \ref{parzen} przyjęta szerokość okna $h_1=0.001$.
 \end{enumerate}
+W dalszej części sprawozdania będę używał nazw "estymator nr 2" itp.
+Do sprawozdania dołączam plik \texttt{code.zip} zawierający pliki z implementacją.
+Pliki obliczające poszczególne eksperymenty/podpunkty tego sprawozdania to
+\texttt{main1234.m}, \texttt{main56.m} oraz \texttt{main7.m}.
+
 
 \section{Filtrowanie wartości odstających}
 Algorytm filtrowania działa na danych znormalizowanych.
@@ -169,7 +174,9 @@ Informowanie klasyfikatorów o prawdopodobieństwach a priori ma bardzo mały wp
 
 
 \section{Porównanie z klasyfikatorem 1-NN}
-TODO
-
+Zbiory trenujący i testujący są normalizowane (odjąć średnią i podzielić przez odchylenie) po każdej z cech niezależnie.
+Klasyfikator 1-NN osiąga wynik \texttt{0.0016465} - wyższy niż klasyfikatory Bayesa.
+Jednak klasyfikatory Bayesa z estymatorami 1 i 2 mają znacząco lepszą wydajność --
+złożoność obliczeniową ewaluacji mają mniejszą o liczbę próbek w zbiorze uczącym.
 
 \end{document}
