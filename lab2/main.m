@@ -22,6 +22,7 @@ size(test)
 labels = unique(train(:,1))
 % unique(test(:,1))
 [labels'; sum(train(:,1) == labels')]
+[labels'; sum(test(:,1) == labels')]
 
 
 
@@ -41,11 +42,11 @@ disp('3. Optimal bayes 2 features-----------------')
 % show all feature pairs visualisations
 function show_all_pairs(data)
     index = 0;
-    figure('Position',[0,0,2000,2000]);
+    figure('Position',[0,0,1500,2000]);
     for i = 2:8
         for j = (i+1):8
             index = index + 1;
-            subplot(5,5, index);
+            subplot(6,4, index);
             title (sprintf ('features %d %d', i, j));
             features = [i j];
             plot2features(data, i, j, 0)
