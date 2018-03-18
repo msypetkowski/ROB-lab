@@ -63,7 +63,7 @@ Przyglądając się wizualizacji (rysunek \ref{fig:2D}) można dostrzec,
 że kolumny 2 i 4 (kolumna 1 to klasa) zapewniają dość dobre oddzielenie próbek różnych klas.
 Przeprowadziłem eksperyment polegający na posortowaniu wizualnie kilku par od najgorszych do najlepszych,
 następnie sprawdziłem czy intuicja się zgadza, okazało się że tak
-(poniżej wyniki dla 3 metod estymacji pdf).
+(poniżej wyniki dla klasyfikatorów używających 3 metod estymacji pdf).
 
 \begin{verbatim}
 run_on_features(train, test, [6 8]) % visually bad
@@ -89,7 +89,7 @@ run_on_features(train, test, [2 3 4 5 6 7 8]) % all features
 \end{figure}
 
 
-\section{Wpływ doboru próbek w zbiorze uczącym na jakość klasyfikacji}
+\section{Wpływ doboru próbek w zbiorze uczącym na jakość klasyfikacji}\label{reduce}
 
 Ten eksperyment bada wpływ na klasyfikację zbioru testowego, ma dobór próbek w zbiorze
 uczącym (losowanie części próbek ze zbioru uczącego niezależnie dla poszczególnych klas).
@@ -134,9 +134,40 @@ Odchylenia standardowe ma trochę mniejsze oraz kształt wykresu ma podobny
 \end{figure}
 
 \section{Wpływ szerokości okna Parzena}\label{parzen}
-TODO
+
+Rysunek \ref{fig:window} pokazuje wartości średnie błędu klasyfikacji podobnie jak w eksperymencie \ref{reduce}.
+Tutaj pozwolę sobie pominąć komentarz, bo wszystko widać na wykresie.
+Pomiary są na podstawie 20 eksperymentów na każdy punkt na wykresie.
+
+\begin{figure}[h]
+    \caption[]{Wpływ doboru próbek w zbiorze uczącym (podobnie jak \ref{fig:reduce1}).
+        Wartości średnie błędu na podstawie 20 eksperymentów.}
+    \centering
+    \includegraphics[width=1.0\textwidth]{window.png}
+    \label{fig:window}
+\end{figure}
+
 \section{Eksperyment ze zmienionym prawdopodobieństwem a priori}
-TODO
+Zbiór testujący jest redukowany tak, że maści inne niż czerwone zamiast 228 próbek, mają po 114.
+Poniższe pomiary uśredionych błędów są na podstawie 200 eksperymentów.
+Uśredniony błąd klasyfikacji z poinformowaniem klasyfikatorów wektorem \texttt{[0.085 0.165 0.165 0.085 0.085 0.165 0.165 0.085]}:
+\begin{verbatim}
+0.0185286   0.0054905   0.0061713
+\end{verbatim}
+Uśredniony błąd klasyfikacji przy podaniu wektora z równymi elementami (\texttt{0.125}),
+ale przy tak samo zredukowanym zbiorze testującym.
+\begin{verbatim}
+ 0.0176318   0.0054941   0.0062811
+\end{verbatim}
+Dla porównania, wyniki dla całego zbioru z równymi a priori:
+\begin{verbatim}
+0.0192097   0.0043908   0.0060373
+\end{verbatim}
+Ogólnie, redukcja zbioru testującego spowodowała drobne pogorszenie wyników dla metody estymacji 1,
+i drobne polepszenie wyników dla metod 2 i 3.
+Informowanie klasyfikatorów o prawdopodobieństwach a priori ma bardzo mały wpływ na ich jakość.
+
+
 \section{Porównanie z klasyfikatorem 1-NN}
 TODO
 
