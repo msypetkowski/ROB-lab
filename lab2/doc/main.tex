@@ -96,7 +96,7 @@ run_on_features(train, test, [2 3 4 5 6 7 8]) % all features
 
 \section{Wpływ doboru próbek w zbiorze uczącym na jakość klasyfikacji}\label{reduce}
 
-Ten eksperyment bada wpływ na klasyfikację zbioru testowego, ma dobór próbek w zbiorze
+Ten eksperyment bada wpływ na klasyfikację zbioru testowego, na dobór próbek w zbiorze
 uczącym (losowanie części próbek ze zbioru uczącego niezależnie dla poszczególnych klas).
 Rysunek \ref{fig:reduce1} przedstawia wartość średnią pomiaru z odchyleniem standardowym.
 Dla każdego współczynnika redukcji i dla każdego klasyfikatora eksperyment jest powtarzany po 20 razy.
@@ -112,7 +112,7 @@ Metoda nr 3 na małej ilości próbek sprawdza się najgorzej, ale dla dużej il
 Można przypuszczać, że dla jeszcze większej ilości próbek ta metoda prześcignęła by metodę 2,
 jednak jest znacząco gorsza wydajnościowo -- czas klasyfikacji rośnie w zależności od ilości próbek.
 
-Można zaobserwować, ze estymacja z oknem Parzena wykazuje większą deterministyczność dla róznych podzbiorów próbek.
+Można zaobserwować, ze estymacja z oknem Parzena wykazuje większą deterministyczność dla różnych podzbiorów próbek.
 Odchylenia standardowe ma trochę mniejsze oraz kształt wykresu ma podobny
 (a przynajmniej zachowuje monotonicznośc) dla średniej, minimum i maksimum.
 
@@ -170,7 +170,7 @@ Dla porównania, wyniki dla całego zbioru z równymi a priori:
 \end{verbatim}
 Ogólnie, redukcja zbioru testującego spowodowała drobne pogorszenie wyników dla metody estymacji 1,
 i drobne polepszenie wyników dla metod 2 i 3.
-Informowanie klasyfikatorów o prawdopodobieństwach a priori ma bardzo mały wpływ na ich jakość.
+Informowanie klasyfikatorów o zmienionych prawdopodobieństwach a priori ma tutaj bardzo mały wpływ (praktycznie pomijalny) na ich jakość.
 
 
 \section{Porównanie z klasyfikatorem 1-NN}
