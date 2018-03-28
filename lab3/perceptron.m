@@ -15,6 +15,10 @@ function [sepplane fp fn] = perceptron(pclass, nclass)
 
   i = 1;
   do 
+    bad = (tset * (sepplane')) < 0;
+	correction = sum(tset(bad, :)) * 0.001;
+	sepplane = sepplane .+ correction;
+
 	%%% YOUR CODE GOES HERE %%%
 	%% You should:
 	%% 1. Check which samples are misclassified (boolean column vector)
@@ -26,6 +30,10 @@ function [sepplane fp fn] = perceptron(pclass, nclass)
 	%%		200 iterations can take a while and probably in most cases is unnecessary
 	++i;
   until i > 200;
+
+
+  disp('-------------');
+  sum(bad)
 
   %%% YOUR CODE GOES HERE %%%
   %% You should:

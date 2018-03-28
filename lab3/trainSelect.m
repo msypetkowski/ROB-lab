@@ -16,7 +16,8 @@ function [sp fp fn] = trainSelect(posc, negc, reps, htrain, margin)
   fNeg = zeros(reps, 1);
   
   for i=1:reps
-    [manysp(i,:) fPos(i) fNeg(i)] = htrain(posc, negc, margin);
+    % [manysp(i,:) fPos(i) fNeg(i)] = htrain(posc, negc, margin);
+    [manysp(i,:) fPos(i) fNeg(i)] = htrain(posc, negc);
   end
   [errCnt theBestIdx] = min(fPos + fNeg);
   sp = manysp(theBestIdx, :);
