@@ -9,6 +9,6 @@ load testl.txt;
 
 ovo = trainOVOensamble(train, trainl, @perceptron);
 
-% clab = unamvoting(tvec, ovo);
-% cfmx = confMx(tlab, clab)
-% compErrors(cfmx)
+clab = unamvoting(test, ovo);
+cfmx = confMx(testl, clab)
+compErrors(cfmx)

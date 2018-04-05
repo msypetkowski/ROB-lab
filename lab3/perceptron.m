@@ -15,29 +15,28 @@ function [sepplane fp fn] = perceptron(pclass, nclass)
 
   i = 1;
   do 
+	%% 1. Check which samples are misclassified (boolean column vector)
     bad = (tset * (sepplane')) < 0;
+
+	%% 2. Compute separating plane correction 
+	%%		This is sum of misclassfied samples coordinate times learning rate 
 	correction = sum(tset(bad, :)) * 0.001;
+
+	%% 3. Modify solution (i.e. sepplane)
 	sepplane = sepplane .+ correction;
 
 	%%% YOUR CODE GOES HERE %%%
 	%% You should:
-	%% 1. Check which samples are misclassified (boolean column vector)
-	%% 2. Compute separating plane correction 
-	%%		This is sum of misclassfied samples coordinate times learning rate 
-	%% 3. Modify solution (i.e. sepplane)
-
 	%% 4. Optionally you can include additional conditions to the stop criterion
 	%%		200 iterations can take a while and probably in most cases is unnecessary
+	% TODO
+
 	++i;
-  until i > 200;
+  until i > 20;
 
-
+  % compute the numbers of false positives and false negatives
   disp('-------------');
+  bad = (tset * (sepplane')) < 0;
   sum(bad)
-
-  %%% YOUR CODE GOES HERE %%%
-  %% You should:
-  %% 1. Compute the numbers of false positives and false negatives
-  fp = 0.25;
-  fn = 0.25;
-  
+  fp = sum(tset(bad, 1) == -1) / rows(tset)
+  fn = sum(tset(bad, 1) == 1) / rows(tset)
