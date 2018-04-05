@@ -1,0 +1,48 @@
+\documentclass[a4paper]{article}
+
+\usepackage[a4paper,  margin=1.0in]{geometry}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+
+
+
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\begin{document}
+
+
+\title{ Laboratorium Rozpoznawania Obrazów – Ćwiczenie \#3 \& \#4 Rozpoznawanie cyfr pisanych ręcznie }
+
+
+\author{Michał Sypetkowski}
+\maketitle
+
+
+\section{Dane i ogólne uwagi}
+Eksperymenty przeprowadzane są na zbiorze danych MNIST. 
+Mamy 60k przykładów trenujących i 10k do testowania.
+
+Zbiór trenujący - pliki:
+\begin{verbatim}
+train-images-idx3-ubyte
+train-labels-idx1-ubyte
+\end{verbatim}
+
+Zbiór testujący:
+\begin{verbatim}
+t10k-images-idx3-ubyte
+t10k-labels-idx1-ubyte
+\end{verbatim}
+
+Skrypt \texttt{genData.m} zmniejsza liczbę wymiarów za pomocą PCA
+i zapisuje dane używane później do eksperymentóœ w plikach:
+\begin{verbatim}
+train trainl test testl
+\end{verbatim}
+
+
+
+\end{document}
