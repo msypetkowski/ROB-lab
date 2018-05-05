@@ -25,7 +25,6 @@ function [sepplane fp fn] = perceptron(pclass, nclass)
 	%% 3. Modify solution (i.e. sepplane)
 	sepplane = sepplane .+ correction;
 
-	%%% YOUR CODE GOES HERE %%%
 	%% You should:
 	%% 4. Optionally you can include additional conditions to the stop criterion
 	%%		200 iterations can take a while and probably in most cases is unnecessary

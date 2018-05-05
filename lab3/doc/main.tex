@@ -21,6 +21,31 @@
 \maketitle
 
 
+
+% TODO ma być w doc:
+% jakość każdego z 45 klasyfikatorów
+% od 7 jest 9 ekspertów i 36 nieuków
+
+% 2 część do zrobienia jest ciekawsza
+% ograniczyć rozległość zespołów jak badamy każda cyfra z każdą
+
+% jak dokonamy podziału na grupy to będzie głosowało 12 klasyfikatorów a nie 45
+% w różnych grupach uzyskamy różną jakość (zależy jak dobże się cyferki oddzielają)
+
+% ostatnia rzecz do zrobienia:
+% klasyfikator który powie że to jest cyferka z danej grupy (np. A lub B lub C)
+% one vs one?
+
+% A 3 5 8
+% B 4 7 9
+% B 0 1 2 6
+% 12 ?
+
+% Podział musi być naprawde dobry żeby wynik był lepszy
+% a to dużo trzebaby siedizeć, ale szkoda czasu
+
+% confustion passes - check
+
 \section{Dane i ogólne uwagi}
 Eksperymenty przeprowadzane są na zbiorze danych MNIST. 
 Mamy 60k przykładów trenujących i 10k do testowania.
@@ -38,11 +63,19 @@ t10k-labels-idx1-ubyte
 \end{verbatim}
 
 Skrypt \texttt{genData.m} zmniejsza liczbę wymiarów za pomocą PCA
-i zapisuje dane używane później do eksperymentóœ w plikach:
+i zapisuje dane używane później do eksperymentów w plikach:
 \begin{verbatim}
 train trainl test testl
 \end{verbatim}
 
+\section{Testy algorytmu dla wielowymiarowych danych.}
+
+Zależność ostatecznej precyzji w zależności od ilości wymiarów danych jest przedstawianoa na wykresie \ref{TODO}.
+Eksperyment z wymiarem 784 odpowiada braku redukcji algorytmem PCA. % TODO: wiadomo
+
+
+\section{Ulepszenie rozwiązania}
+% pomysł: subuj prawdopodobieńśtwa w głosowaniu a nie decyzje
 
 
 \end{document}
