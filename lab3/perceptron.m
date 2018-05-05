@@ -14,28 +14,42 @@ function [sepplane fp fn] = perceptron(pclass, nclass)
   nNeg = rows(nclass); % number of negative samples
 
   i = 1;
+
+  % for stop criterion
+  bestResult = sum((tset * (sepplane')) < 0);
+  notImprovedIterationCounter = 0;
+
   do 
-	%% 1. Check which samples are misclassified (boolean column vector)
+    %% 1. Check which samples are misclassified (boolean column vector)
     bad = (tset * (sepplane')) < 0;
 
-	%% 2. Compute separating plane correction 
-	%%		This is sum of misclassfied samples coordinate times learning rate 
-	correction = sum(tset(bad, :)) * 0.001;
+    %% 2. Compute separating plane correction 
+    %%      This is sum of misclassfied samples coordinate times learning rate 
+    correction = sum(tset(bad, :)) * 0.001;
 
-	%% 3. Modify solution (i.e. sepplane)
-	sepplane = sepplane .+ correction;
+    %% 3. Modify solution (i.e. sepplane)
+    sepplane = sepplane .+ correction;
 
-	%% You should:
-	%% 4. Optionally you can include additional conditions to the stop criterion
-	%%		200 iterations can take a while and probably in most cases is unnecessary
-	% TODO
+    %% 4. Optionally you can include additional conditions to the stop criterion
+    %%      200 iterations can take a while and probably in most cases is unnecessary
+    newResult = sum(bad);
+    if newResult >= bestResult
+      notImprovedIterationCounter = notImprovedIterationCounter + 1;
+    else
+      notImprovedIterationCounter = 0;
+      bestResult = newResult;
+    endif
 
-	++i;
-  until i > 20;
+    if notImprovedIterationCounter > 15;
+      break
+    endif
+
+
+    ++i;
+  until i > 1000;
 
   % compute the numbers of false positives and false negatives
-  disp('-------------');
   bad = (tset * (sepplane')) < 0;
-  sum(bad)
-  fp = sum(tset(bad, 1) == -1) / rows(tset)
-  fn = sum(tset(bad, 1) == 1) / rows(tset)
+  sum(bad);
+  fp = sum(tset(bad, 1) == -1) / rows(tset);
+  fn = sum(tset(bad, 1) == 1) / rows(tset);

@@ -6,7 +6,7 @@ comp_count = 80;
 [tvec tlab tstv tstl] = readSets(); 
 
 % przed redukcj¹ danych mo¿na spojrzeæ na cyfry
-imshow(1-reshape(tvec(1,:), 28, 28)');
+% imshow(1-reshape(tvec(1,:), 28, 28)');
 
 % oczywicie warto tak¿e sprawdziæ etykiety
 [unique(tlab)'; unique(tstl)']

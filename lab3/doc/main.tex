@@ -68,13 +68,126 @@ i zapisuje dane używane później do eksperymentów w plikach:
 train trainl test testl
 \end{verbatim}
 
-\section{Testy algorytmu dla wielowymiarowych danych.}
+Eksperymenty opisane w sekcji \ref{canonical} są zaimplementowane w pliku \texttt{main.m},
+a te opisane w sekcji \ref{improved} -- w pliku \texttt{main2.m}.
 
-Zależność ostatecznej precyzji w zależności od ilości wymiarów danych jest przedstawianoa na wykresie \ref{TODO}.
-Eksperyment z wymiarem 784 odpowiada braku redukcji algorytmem PCA. % TODO: wiadomo
+\section{Rozwiązanie "kanoniczne"}
+\label{canonical}
+
+W rozwiązaniu kanonicznym trenowane jest 45 klasyfikatorów liniowych
+i przeprowadzane jest głosowanie typu OVO.
+Trenowanie pojedyńczego klasyfikatora jest zaimplementowane w pliku \texttt{perceptron.m}.
+Każdy klasyfikator (spośród 45) był trenowany po 10 razy aby wybrać ten najlepszy.
+
+\subsection{Testy algorytmu dla wielowymiarowych danych.}
+Wyniki klasyfikatora w zależności od liczby atrybutów (redukcja PCA) przedstawione są w tebeli \ref{table:attrCount},
+a wyniki na zbiorze trenującym w tabeli \ref{table:attrCountTrain}.
+
+W razie potrzeby wyciągnięcia bardziej szczegółowych danych,
+eksperymenty można powtórzyć (ustawione zostało stałe ziarno losowe).
+
+\begin{table}[H]
+    \caption{Wyniki klasyfikatora "kanonicznego" dla różnej ilości atrybutów - na zbiorze testowym
+    \label{table:attrCount}
+    }
+\begin{center}
+    \begin{tabular}{| l | l | l | l |}
+    \hline
+        Ilość atrybutów & precyzja & błąd & wsp. odrzuconych \\
+    \hline
+        2  & 0.374 & 0.447 & 0.179 \\
+        10 & 0.797 & 0.151 & 0.052 \\
+        20 & 0.893 & 0.073 & 0.033 \\
+        40 & 0.914 & 0.056 & 0.030 \\
+        80 & 0.923 & 0.048 & 0.029 \\
+        160& 0.924 & 0.049 & 0.028 \\
+        784& 0.919 & 0.046 & 0.035 \\
+        784 - bez PCA & 0.925 & 0.051 & 0.025 \\
+    \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+    \caption{Wyniki klasyfikatora "kanonicznego" dla różnej ilości atrybutów - na zbiorze trenującym
+    \label{table:attrCountTrain}
+    }
+\begin{center}
+    \begin{tabular}{| l | l | l | l |}
+    \hline
+        Ilość atrybutów & precyzja & błąd & wsp. odrzuconych \\
+    \hline
+        2  & 0.372 & 0.451 & 0.176 \\
+        10 & 0.793 & 0.152 & 0.055 \\
+        20 & 0.888 & 0.079 & 0.033 \\
+        40 & 0.912 & 0.057 & 0.030 \\
+        80 & 0.925 & 0.048 & 0.027 \\
+        160& 0.930 & 0.044 & 0.026 \\
+        784& 0.935 & 0.038 & 0.028 \\
+        784 - bez PCA & 0.928 & 0.046 & 0.027 \\
+    \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+Wynik dla 160 wymiarowych danych niewiele różni się od tego dla 80 wymiarowych.
+Jako rozwiązanie "kanoniczne" będzie przyjmowany klasyfikator działający na 80 atrybutach.
+
+\subsection{Szczegółowe wnikiki dla klasyfikatora działającego na 80 atrybutach}
 
 
-\section{Ulepszenie rozwiązania}
+\begin{table}[H]
+    \caption{Macierz pomyłek dla klasyfikatora "kanonicznego"
+    \label{table:confusion}
+    }
+\begin{center}
+    \begin{tabular}{| l | l | l | l | l | l | l | l | l | l | l | l | l |}
+    \hline
+        - & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & reject\\
+    \hline
+        0 &  950  &   0   &  0  &   1  &   0  &   5  &   5 &    0  &   0 &    1   & 18 \\
+        1 &  950  &1096   &  5  &   1  &   0  &   1  &   2 &    1  &  16 &    0   & 13 \\
+        2 &  951  &   2   &958  &   6  &   5  &   1  &   6 &    5  &  19 &    0   & 29 \\
+        3 &  950  &   1   &  5  & 928  &   1  &  18  &   1 &    8  &  10 &    4   & 34 \\
+        4 &  951  &   0   &  5  &   1  & 915  &   0  &   6 &    2  &   5 &   20   & 27 \\
+        5 &  957  &   1   &  0  &  36  &   3  & 781  &   9 &    1  &  17 &    3   & 34 \\
+        6 &  955  &   2   &  9  &   1  &   2  &  18  & 899 &    1  &   1 &    0   & 20 \\
+        7 &  950  &   3   & 19  &   6  &   2  &   0  &   0 &  940  &   1 &   21   & 36 \\
+        8 &  953  &   0   &  3  &  27  &   3  &  20  &   3 &    3  & 862 &    4   & 46 \\
+        9 &  953  &   5   &  1  &   6  &  31  &   4  &   0 &   21  &   5 &  903   & 30 \\
+    \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{table}[H]
+    \caption{Wyniki pojedyńczych klasyfikatorów
+    \label{table:indiv}
+    }
+\begin{center}
+    \begin{tabular}{| l | l | l | l | l | l | l | l | l | l | l | l | l |}
+    \hline
+        - & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+    \hline
+ 0 &  0.000 & 0.999 & 0.991 & 0.993 & 0.997 & 0.990 & 0.990 & 0.995 & 0.993 & 0.994 \\
+ 1 &  0.000 & 0.000 & 0.993 & 0.995 & 1.000 & 0.993 & 0.995 & 0.992 & 0.985 & 0.995 \\
+ 2 &  0.000 & 0.000 & 0.000 & 0.977 & 0.982 & 0.979 & 0.983 & 0.978 & 0.978 & 0.981 \\
+ 3 &  0.000 & 0.000 & 0.000 & 0.000 & 0.995 & 0.958 & 0.992 & 0.980 & 0.961 & 0.981 \\
+ 4 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.988 & 0.989 & 0.989 & 0.991 & 0.965 \\
+ 5 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.972 & 0.993 & 0.956 & 0.985 \\
+ 6 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.993 & 0.990 & 0.995 \\
+ 7 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.991 & 0.953 \\
+ 8 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.981 \\
+ 9 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+    \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+
+\section{Ulepszenie rozwiązania "kanonicznego"}
+\label{improved}
 % pomysł: subuj prawdopodobieńśtwa w głosowaniu a nie decyzje
 
 

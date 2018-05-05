@@ -25,7 +25,7 @@ function ovosp = trainOVOensamble(tset, tlab, htrain)
     negSamples = tset(tlab == pairs(i,2), :);
 	
 	% train 5 classifiers and select the best one
-    [sp fp fn] = trainSelect(posSamples, negSamples, 5, htrain);
+    [sp fp fn] = trainSelect(posSamples, negSamples, 10, htrain);
 	
 	% what to do with errors?
 	
