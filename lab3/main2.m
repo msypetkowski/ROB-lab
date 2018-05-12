@@ -19,7 +19,8 @@
 
 groups = {
     [0;1;2;3;4;6;7;9]+1;
-    [5;8]+1;
+    [8]+1;
+    [5]+1;
 };
 
 function newLbl = groupLabels(lbl, groups)
@@ -59,6 +60,14 @@ else
     globalOvo = [];
 endif
 
+% measure group classifier
+disp('----------------Group classifier confusion matrix')
+cfmx = confMx(groupLabels(testl, groups),
+              unamvoting(test, globalOvo))
+disp('----------------Group classifier precision')
+output_precision(3)
+compErrors(cfmx)
+
 % list of in-group sets of classifiers - use classifiers from "canonical" solution
 canonicalOvo = trainOVOensamble(train, trainl, @perceptron);
 localOvos = {};
@@ -68,7 +77,7 @@ for i=1:rows(groups)
         classifiers = [];
         for j=1:rows(group)
             for k=j+1:rows(group)
-                classifier = canonicalOvo(canonicalOvo(:,1)==group(j) & canonicalOvo(:,2)==group(k), :)
+                classifier = canonicalOvo(canonicalOvo(:,1)==group(j) & canonicalOvo(:,2)==group(k), :);
                 assert(rows(classifier) == 1);
                 classifiers = [classifiers ; classifier];
             endfor
@@ -99,7 +108,7 @@ endfor
 
 
 clab = classifyWithGroups(test, groups, globalOvo, localOvos);
-disp('----------------Confusion matrix')
+disp('----------------Final confusion matrix')
 cfmx = confMx(testl, clab)
 disp('----------------Final results')
 output_precision(3)

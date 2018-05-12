@@ -2,7 +2,7 @@ function clab = classifyWithGroups(data, groups, globalOvo, localOvos)
     reject = 11;
     clab = ones(rows(data), 1) * reject;
     if rows(groups) > 1
-        predictedGroups = unamvoting(data, globalOvo);
+        predictedGroups = unamvoting(data, globalOvo, 11);
         assert(rows(predictedGroups) == rows(data));
     else
         predictedGroups = ones(rows(data), 1)
@@ -12,7 +12,7 @@ function clab = classifyWithGroups(data, groups, globalOvo, localOvos)
         group = groups{i};
         mask = predictedGroups==i;
         if rows(group) > 1
-            predictedLabels = unamvoting(data(mask, :), localOvos{i});
+            predictedLabels = unamvoting(data(mask, :), localOvos{i}, 11);
         else
             predictedLabels = ones(rows(data(mask, :)), 1);
         endif
