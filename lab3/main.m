@@ -37,7 +37,7 @@ clab = unamvoting(test, ovo);
 cfmx = confMx(testl, clab)
 
 disp('----------------Final OVO results')
-output_precision(2)
+output_precision(3)
 compErrors(cfmx)
 
 disp('----------------Confusion matrix - training set')

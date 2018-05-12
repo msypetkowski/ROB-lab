@@ -81,6 +81,7 @@ Trenowanie pojedyńczego klasyfikatora jest zaimplementowane w pliku \texttt{per
 Każdy klasyfikator (spośród 45) był trenowany po 10 razy aby wybrać ten najlepszy.
 
 \subsection{Testy algorytmu dla wielowymiarowych danych.}
+\label{multidim}
 Wyniki klasyfikatora w zależności od liczby atrybutów (redukcja PCA) przedstawione są w tebeli \ref{table:attrCount},
 a wyniki na zbiorze trenującym w tabeli \ref{table:attrCountTrain}.
 
@@ -135,6 +136,37 @@ Wynik dla 160 wymiarowych danych niewiele różni się od tego dla 80 wymiarowyc
 Jako rozwiązanie "kanoniczne" będzie przyjmowany klasyfikator działający na 80 atrybutach.
 
 \subsection{Szczegółowe wyniki dla klasyfikatora działającego na 80 atrybutach}
+
+W tej sekcji przedstawione są tylko wyniki na zbiorze testującym
+(wyniki na zbiorze trenującym nie zaskakiwały w sekcji \ref{multidim}, to najprawdopodobniej i tutaj tak będzie).
+
+Ktyterium odrzucania polega na odrzuceniu w przypadku nie osiągnięcia maksymalnej ilości głosów za którąś z klas.
+Rezultat pokazuje \ref{table:noReject}.
+Drugi wiersz tabeli to wyniki eksperymentu, gdzie brana jest pierwsza z brzegu klasa z maksymalną ilością głosów.
+Przykłady odrzucone w 1/3 są klasyfikowane poprawnie -- lepiej niż losowo (1/10).
+
+% kryterium to mozna uznać za słuszne --
+
+Macierz pomyłek dla tego klasyfikatora jest przedstawiona w tabeli \ref{table:confusion},
+a wyniki skuteczności separacji dla poszczególnych 45 klasyfikatorów w tabeli \ref{table:indiv}.
+Najwięcej jest pomyłek takich, że klasyfikator uznaje cyfry 5 i 8 za 3.
+
+\begin{table}[H]
+    \caption{Wyniki wybranego klasyfikatora "kanonicznego" - wpływ dopuszczenia odrzucania decyzji
+    \label{table:noReject}
+    }
+\begin{center}
+    \begin{tabular}{| l | l | l | l |}
+    \hline
+        & precyzja & błąd & wsp. odrzuconych \\
+    \hline
+        z odrzuceniem  & 0.925 & 0.048 & 0.027 \\
+        bez odrzucenia & 0.934 & 0.066 &  0.000 \\
+
+    \hline
+    \end{tabular}
+\end{center}
+\end{table}
 
 
 \begin{table}[H]
