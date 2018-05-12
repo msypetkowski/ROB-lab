@@ -47,7 +47,8 @@
 % confustion passes - check
 
 \section{Dane i ogólne uwagi}
-Eksperymenty przeprowadzane są na zbiorze danych MNIST. 
+Eksperymenty przeprowadzane są na zbiorze danych MNIST
+\footnote{\url{http://yann.lecun.com/exdb/mnist/}}
 Mamy 60k przykładów trenujących i 10k do testowania.
 
 Zbiór trenujący - pliki:
@@ -137,7 +138,8 @@ Jako rozwiązanie "kanoniczne" będzie przyjmowany klasyfikator działający na 
 
 
 \begin{table}[H]
-    \caption{Macierz pomyłek dla klasyfikatora "kanonicznego"
+    \caption{Macierz pomyłek dla klasyfikatora "kanonicznego".
+    Wiersze odpowiadają odpowiedziom klasyfikatora (a kolumny -- "ground truth").
     \label{table:confusion}
     }
 \begin{center}
@@ -170,16 +172,16 @@ Jako rozwiązanie "kanoniczne" będzie przyjmowany klasyfikator działający na 
     \hline
         - & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
     \hline
- 0 &  0.000 & 0.999 & 0.991 & 0.993 & 0.997 & 0.990 & 0.990 & 0.995 & 0.993 & 0.994 \\
- 1 &  0.000 & 0.000 & 0.993 & 0.995 & 1.000 & 0.993 & 0.995 & 0.992 & 0.985 & 0.995 \\
- 2 &  0.000 & 0.000 & 0.000 & 0.977 & 0.982 & 0.979 & 0.983 & 0.978 & 0.978 & 0.981 \\
- 3 &  0.000 & 0.000 & 0.000 & 0.000 & 0.995 & 0.958 & 0.992 & 0.980 & 0.961 & 0.981 \\
- 4 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.988 & 0.989 & 0.989 & 0.991 & 0.965 \\
- 5 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.972 & 0.993 & 0.956 & 0.985 \\
- 6 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.993 & 0.990 & 0.995 \\
- 7 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.991 & 0.953 \\
- 8 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.981 \\
- 9 &  0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\
+ 0 &  -     & 0.999 & 0.991 & 0.993 & 0.997 & 0.990 & 0.990 & 0.995 & 0.993 & 0.994 \\
+ 1 &  -     & -     & 0.993 & 0.995 & 1.000 & 0.993 & 0.995 & 0.992 & 0.985 & 0.995 \\
+ 2 &  -     & -     & -     & 0.977 & 0.982 & 0.979 & 0.983 & 0.978 & 0.978 & 0.981 \\
+ 3 &  -     & -     & -     & -     & 0.995 & 0.958 & 0.992 & 0.980 & 0.961 & 0.981 \\
+ 4 &  -     & -     & -     & -     & -     & 0.988 & 0.989 & 0.989 & 0.991 & 0.965 \\
+ 5 &  -     & -     & -     & -     & -     & -     & 0.972 & 0.993 & 0.956 & 0.985 \\
+ 6 &  -     & -     & -     & -     & -     & -     & -     & 0.993 & 0.990 & 0.995 \\
+ 7 &  -     & -     & -     & -     & -     & -     & -     & -     & 0.991 & 0.953 \\
+ 8 &  -     & -     & -     & -     & -     & -     & -     & -     & -     & 0.981 \\
+ 9 &  -     & -     & -     & -     & -     & -     & -     & -     & -     & -     \\
     \hline
     \end{tabular}
 \end{center}
