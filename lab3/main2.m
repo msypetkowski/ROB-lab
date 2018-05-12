@@ -1,9 +1,9 @@
-% special case - OVO
+% special case - just OVO
 % groups = {
 %     [0;1;2;3;4;5;6;7;8;9]+1;
 % };
 
-% special case - also OVO
+% special case - also just OVO
 % groups = {
 %     [0]+1;
 %     [1]+1;
@@ -53,30 +53,49 @@ rand ("seed", 123)
 if rows(groups) > 1
     newTrainl = groupLabels(trainl, groups);
     globalOvo = trainOVOensamble(train, newTrainl, @perceptron);
-
     assert(rows(globalOvo) == (rows(groups) * (rows(groups) -1)) / 2);
     assert(rows(unique(newTrainl)) == rows(groups));
 else
     globalOvo = [];
 endif
 
-
-% list of in-group sets of classifiers
+% list of in-group sets of classifiers - use classifiers from "canonical" solution
+canonicalOvo = trainOVOensamble(train, trainl, @perceptron);
 localOvos = {};
 for i=1:rows(groups)
     group = groups{i};
-
-    % select training examples with labels that group has
-    [data lbl] = selectExamples(train, trainl, group);
-    assert(rows(data) == rows(lbl));
-
     if rows(group) > 1
-        localOvos{i, 1} = trainOVOensamble(data, lbl, @perceptron);
+        classifiers = [];
+        for j=1:rows(group)
+            for k=j+1:rows(group)
+                classifier = canonicalOvo(canonicalOvo(:,1)==group(j) & canonicalOvo(:,2)==group(k), :)
+                assert(rows(classifier) == 1);
+                classifiers = [classifiers ; classifier];
+            endfor
+        endfor
+        localOvos{i, 1} = classifiers;
     else
-        localOvos{i, 1} = []
+        localOvos{i, 1} = [];
     end
 endfor
-assert(rows(localOvos) == rows(groups));
+
+
+% list of in-group sets of classifiers
+% localOvos = {};
+% for i=1:rows(groups)
+%     group = groups{i};
+% 
+%     % select training examples with labels that group has
+%     [data lbl] = selectExamples(train, trainl, group);
+%     assert(rows(data) == rows(lbl));
+% 
+%     if rows(group) > 1
+%         localOvos{i, 1} = trainOVOensamble(data, lbl, @perceptron);
+%     else
+%         localOvos{i, 1} = []
+%     end
+% endfor
+% assert(rows(localOvos) == rows(groups));
 
 
 clab = classifyWithGroups(test, groups, globalOvo, localOvos);
