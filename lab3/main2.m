@@ -3,24 +3,41 @@
 %     [0;1;2;3;4;5;6;7;8;9]+1;
 % };
 
-% special case - also just OVO
+% groups = {
+%     [0]+1;
+%     [1]+1;
+%     [6]+1;
+%     [2;3;4;5;7;8;9]+1;
+% };
+
 % groups = {
 %     [0]+1;
 %     [1]+1;
 %     [2]+1;
-%     [3]+1;
-%     [4]+1;
-%     [5]+1;
 %     [6]+1;
-%     [7]+1;
-%     [8]+1;
-%     [9]+1;
+%     [3;4;5;7;8;9]+1;
+% };
+
+% groups = {
+%     [0]+1;
+%     [1]+1;
+%     [2]+1;
+%     [6]+1;
+%     [3;5;8]+1;
+%     [4;7;9]+1;
+% };
+
+% groups = {
+%     [0]+1;
+%     [1;2;3;4;5;6;7;8;9]+1;
 % };
 
 groups = {
-    [0;1;2;4;6;7;9]+1;
+    [0;1;2;6]+1;
     [3;5;8]+1;
+    [4;7;9]+1;
 };
+
 
 function newLbl = groupLabels(lbl, groups)
     newLbl = zeros(rows(lbl), 1);
@@ -50,6 +67,7 @@ load testl.txt;
 % make experiments repeatable
 rand ("seed", 123)
 
+canonicalOvo = trainOVOensamble(train, trainl, @perceptron);
 
 % train set of classifiers for distinguishing group
 if rows(groups) > 1
@@ -62,15 +80,16 @@ else
 endif
 
 % measure group classifier
-disp('----------------Group classifier confusion matrix')
-cfmx = confMx(groupLabels(testl, groups),
-              unamvoting(test, globalOvo))
-disp('----------------Group classifier precision')
-output_precision(3)
-compErrors(cfmx)
+if rows(groups) > 1
+    disp('----------------Group classifier confusion matrix')
+    cfmx = confMx(groupLabels(testl, groups),
+                unamvoting(test, globalOvo))
+    disp('----------------Group classifier precision')
+    output_precision(3)
+    compErrors(cfmx)
+endif
 
 % list of in-group sets of classifiers - use classifiers from "canonical" solution
-canonicalOvo = trainOVOensamble(train, trainl, @perceptron);
 localOvos = {};
 for i=1:rows(groups)
     group = groups{i};

@@ -5,7 +5,7 @@ function clab = classifyWithGroups(data, groups, globalOvo, localOvos)
         predictedGroups = unamvoting(data, globalOvo, 11);
         assert(rows(predictedGroups) == rows(data));
     else
-        predictedGroups = ones(rows(data), 1)
+        predictedGroups = ones(rows(data), 1);
     endif
     % assert(rows(unique(predictedGroups)) == rows(groups) + 1); %  + 1 because some are rejected
     for i=1:rows(groups)
