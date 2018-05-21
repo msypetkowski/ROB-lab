@@ -26,24 +26,35 @@ function [hidlw outlw terr] = backprop(tset, tslb, inihidlw, inioutlw, lr)
 		% 4. Propagate input forward through the ANN
 		% remember to extend input [tset(i, :) 1]
 		input = [tset(i, :) 1];
-		midOutputNoActivation = input * inihidlw;
+		midOutputNoActivation = input * hidlw;
 		midOutput = [actf(midOutputNoActivation) 1];
-		output = midOutput * inioutlw;
+		output = midOutput * outlw;
 
 		% 5. Adjust total error (just to know this value)
 		
 		% 6. Compute delta error of the output layer
 		% how many delta errors should be computed here?
-		outputDelta = (output - desiredOutput) .* (midOutput' .* inioutlw);
+		outputDelta = (output - desiredOutput) .* (midOutput');
 		
 		% 7. Compute delta error of the hidden layer
 		% how many delta errors should be computed here?
-		% hiddenDelta = ((output - desiredOutput) * inioutlw) * actdf(midOutputNoActivation);
+		% hiddenDelta = ((output - desiredOutput) * outlw) * actdf(midOutputNoActivation);
+		hiddenDelta = zeros(rows(hidlw), columns(hidlw));
+		% non-vectorized version:
+		% for x=1:rows(hidlw)
+		%	  for i=1:columns(hidlw)
+		%		  hiddenDelta(x, i) = sum((output - desiredOutput) .* outlw(i, :)) .* actdf(midOutput(1, i)) .* input(1, x);
+		%	  endfor
+		% endfor
+		for i=1:columns(hidlw)
+			someScalar = sum((output - desiredOutput) .* outlw(i, :)) .* actdf(midOutput(1, i));
+			hiddenDelta(:, i) = someScalar .* input(1, :);
+		endfor
 		
 		% 8. Update output layer weights
-		inioutlw = inioutlw - outputDelta .* lr;
+		outlw = outlw - outputDelta * lr;
 		
 		% 9. Update hidden layer weights
-		% inihidlw = inihidlw - hiddenDelta * lr;
+		hidlw = hidlw - hiddenDelta * lr;
 
 	end
