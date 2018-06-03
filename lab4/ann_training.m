@@ -2,8 +2,8 @@
 tlab += 1;
 tstl += 1;
 
-% tvec = tvec(1:300, :);
-% tlab = tlab(1:300, :);
+% tvec = tvec(1:100, :);
+% tlab = tlab(1:100, :);
 
 % remove columns with zero std 
 toRemain = std(tvec) != 0;
@@ -16,7 +16,7 @@ sig = std(tvec);
 
 noHiddenNeurons = 200;
 noEpochs = 8;
-learningRate = 0.005;
+learningRate = 0.020;
 
 rand ("seed", 123)
 
@@ -24,13 +24,14 @@ rand ("seed", 123)
 [hlnn olnn] = crann(columns(tvec), noHiddenNeurons, 10);
 trainError = zeros(1, noEpochs);
 testError = zeros(1, noEpochs);
-trReport = [];
-labels = unique(tstl)
-sumcfmx = cfmx = zeros(rows(labels), rows(labels) +1);
+% trReport = [];
+labels = unique(tstl);
 for epoch=1:noEpochs
 	tic();
+    disp('------------------Next epoch')
+    learningRate
 	[hlnn olnn terr] = backprop(tvec, tlab, hlnn, olnn, learningRate);
-    learningRate = learningRate * 0.5
+    learningRate = learningRate * 0.75;
 	clsRes = anncls(tvec, hlnn, olnn);
 	cfmx = confMx(tlab, clsRes);
 	errcf = compErrors(cfmx);
@@ -38,17 +39,24 @@ for epoch=1:noEpochs
 
 	clsRes = anncls(tstv, hlnn, olnn);
 	cfmx = confMx(tstl, clsRes);
-    sumcfmx = sumcfmx + cfmx;
 	errcf2 = compErrors(cfmx);
 	testError(epoch) = errcf2(2);
 	epochTime = toc();
 	[epoch epochTime trainError(epoch) testError(epoch)]
-	trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
+	% trReport = [trReport; epoch epochTime trainError(epoch) testError(epoch)];
 	[errcf errcf2]
 	fflush(stdout);
 end
 
+disp('-----------------Test set results')
 [(1:columns(testError))', testError']
-output_precision(0)
-[1:11 ; [sumcfmx / noEpochs]]
-assert(sum(sum(sumcfmx)) / noEpochs == rows(tstl))
+clsRes = anncls(tstv, hlnn, olnn);
+cfmx = confMx(tstl, clsRes);
+[1:11 ; cfmx]
+compErrors(cfmx)
+
+disp('-----------------Training set results')
+clsRes = anncls(tvec, hlnn, olnn);
+cfmx = confMx(tlab, clsRes);
+[1:11 ; cfmx]
+compErrors(cfmx)
