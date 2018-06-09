@@ -14,8 +14,8 @@ tstv = tstv(:, toRemain);
 mu = mean(tvec);
 sig = std(tvec);
 
-noHiddenNeurons = 200;
-noEpochs = 8;
+noHiddenNeurons = 400;
+noEpochs = 10;
 learningRate = 0.020;
 
 rand ("seed", 123)
