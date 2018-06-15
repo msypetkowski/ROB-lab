@@ -26,15 +26,19 @@ testlab = testlab + 1;
 
 
 threshold = 0.79
-disp('------------------- simply thresholding mean probabilities')
+% threshold = 0.95
+
+disp('------------------- simply thresholding probabilities')
 [ max_values answers ] = max(vtab, [], 2);
 answers(max_values < threshold) = 11;
 confmx = confMx(validlab, answers);
 errcfs = compErrors(confmx);
-resVald = [errcfs fobj(errcfs)]
+output_precision(2)
+resVald = [errcfs fobj(errcfs)] * 100
 
 [ max_values answers ] = max(ttab, [], 2);
 answers(max_values < threshold) = 11;
 confmx = confMx(testlab, answers);
 errcfs = compErrors(confmx);
-resTest = [errcfs fobj(errcfs)]
+output_precision(2)
+resTest = [errcfs fobj(errcfs)] * 100

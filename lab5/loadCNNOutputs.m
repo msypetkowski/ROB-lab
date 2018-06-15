@@ -11,11 +11,8 @@ function vtab = loadCNNOutputs(fnames, probabilities=false)
 	for i=1:size(fnames,1)
 		valc = load(fnames{i});
         if probabilities
-            vtab = vtab + valc;
+            vtab = vtab + valc / rows(fnames);
         else
             vtab = [vtab decmax(valc)];
         end
 	end
-    if probabilities
-        vtab = vtab / rows(fnames);
-    end
